@@ -1,9 +1,13 @@
 #include "stm32f10x.h"                  // Device header
 #include "FFT.h"//数据使用
 #include "USART.h"
+#include "Delay.h"
 #include <arm_math.h>
 //usart2 TX:PA2  RX:PA3  用来与上位机通信
 u8 TXT_ID[12]={0,1,2,3,4,5,6,7,8,9,10,11};
+USART_RX_Packet rxPacket_2;
+uint8_t dataIndex_2 = 0;
+uint8_t packetState_2 = 0; // 0:等待头 1:接收数据 2:等待尾
 void usart2_init(u32 bound)
 {
    GPIO_InitTypeDef GPIO_InitStructure;
@@ -39,11 +43,45 @@ void usart2_init(u32 bound)
 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART_Init(USART2, &USART_InitStructure);
-
-	//USART_ITConfig(USART1, USART_IT_RXNE, ENABLE); // 开启中断  处理接受的数据
+	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE); // 开启中断  处理接受的数据
 	USART_Cmd(USART2, ENABLE);                     // 使能串口
 }
-
+void USART2_IRQHandler(void)
+{
+    if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) {
+        // 读取接收到的数据
+				uint8_t receivedByte;
+        receivedByte = USART_ReceiveData(USART2);
+        
+        switch(packetState_2) {
+            case 0: // 等待头
+                if(receivedByte == HEAD) {
+                    packetState_2 = 1;
+                    dataIndex_2 = 0;
+                }
+                break;
+                
+            case 1: // 接收数据
+                rxPacket_2.data[dataIndex_2++] = receivedByte;
+                if(dataIndex_2 >= RX_DATA_LEN) {
+                    packetState_2 = 2;
+                }
+                break;
+                
+            case 2: // 等待尾
+                if(receivedByte == TAIL) {
+                    rxPacket_2.received = 1;
+                    // 数据包接收完成，可以处理
+                    processPacket(&rxPacket_2);
+                }
+                packetState_2 = 0; // 无论是否匹配，都重置状态
+                break;
+        }
+        
+        // 清除中断标志
+        USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+    }
+}
 void HMISendStr(char* buf)
 {
 	uint8_t i=0;
@@ -100,15 +138,20 @@ void WaveForm_Draw(void){
 //	printf("addt s0.id,0,%d\xff\xff\xff",WAVE_W);
 	 //清除曲线控件s0的0通道数据,cle指令不支持跨页面
 	 printf("cle s0.id,0\xff\xff\xff");
+	 Delay_ms(10);
 	 printf("addt s0.id,0,%d\xff\xff\xff",WAVE_W);
-	for(i=0;i<WAVE_W;i++){
-		x = (float)i / WAVE_W * 2 * 3.1415926f;
+	 //等待适量时间
+   Delay_ms(100);
+	 for(i=0;i<WAVE_W;i++){
+		h=0;
+		x = (float)i* 2 * 3.1415926f / WAVE_W ;
 		for(j=0;j<5;j++){
 			h+=U[j]*arm_sin_f32((j+1)*x+Phase[j]);
 		}	
-	h=h*128/1.5f+128;
-	printf("%c",(int)h);
-	h=0;
+	h=h*128/2.0f+128;
+		if(h>256)h=255;
+		else if(h<0)h=0;
+	printf("%c",(int)h);//tjc会对h%256
 	}
  //确保透传结束，以免影响下一条指令
 	printf("\x01\xff\xff\xff");
@@ -118,114 +161,30 @@ void WaveForm_Draw(void){
 void HMIDraw(void)
 {
 	//U[i]   Phase[i]  波形信息
-	selected_USART=usart2_u;
-	//debug用
-	if(HMID_Show_Way){
-		
-		u8 w=AMPLITUDE_W/(FFT_Len/2),i;
-		
-		if(Mag_max<=AMPLITUDE_H){
-			for(i=0;i<FFT_Len/2;i++)
-			{
-				printf("fill %d,%d,%d,%d,BLUE\xff\xff\xff",
-				AMPLITUDE_X+i*w,
-				AMPLITUDE_ZERO_LINE-(uint32_t)FFT_Mag[i],
-				AMPLITUDE_W_TO_DRAW,
-				(uint32_t)FFT_Mag[i]);
-			}
+		selected_USART=usart2_u;
+		u8 i;
+		for(i=0;i<SHOW_NUM;i++)
+		{
+			printf("t%d.txt=\"%.2f\"\xff\xff\xff",TXT_ID[i],U[i]);
+			printf("t%d.txt=\"%.2f\"\xff\xff\xff",TXT_ID[i+5],Phase[i]);
 		}
-		else{
-			u32 h;
-			for(i=0;i<FFT_Len/2;i++)
-			{
-				h=(FFT_Mag[i]*AMPLITUDE_H/Mag_max);//注意由于u8的特性 FFT_Mag[i]/Mag_max为0 让计算变得无意义
-				printf("fill %d,%d,%d,%d,BLUE\xff\xff\xff",
-				AMPLITUDE_X+i*w,
-				AMPLITUDE_ZERO_LINE-h,
-				AMPLITUDE_W_TO_DRAW,
-				h);
-			}
-		}
+		printf("t%d.txt=\"%.2f\"\xff\xff\xff",10,freq_basic);
+		printf("t%d.txt=\"%.2f%%\"\xff\xff\xff", 11, THD * 100);
 		
-		int16_t h_p;
-		w=PHASE_W/SHOW_NUM;
-		
-    for(i=0;i<SHOW_NUM;i++){
-				h_p=Phase[i]*PHASE_H/2/180;
-				//正负绘制不同
-				if(h_p>=0){
-				 printf("fill %d,%d,%d,%d,BLUE\xff\xff\xff",
-					PHASE_X+i*w,
-					PHASE_ZERO_LINE-h_p,
-					PHASE_W_TO_DRAW,
-					h_p);
-				}
-				else
-				{
-					h_p=-h_p;
-				  printf("fill %d,%d,%d,%d,BLUE\xff\xff\xff",
-					PHASE_X+i*w,
-					PHASE_ZERO_LINE,
-					PHASE_W_TO_DRAW,
-					h_p);
-				}
-			}
-	}
-	else{//正式显示用    
-		u8 w=AMPLITUDE_W/(SHOW_NUM),i;
-		u16 h;
-		int16_t h_p;
-			for(i=0;i<SHOW_NUM;i++)
-			{
-				//p-
-				h=U[i]*(AMPLITUDE_H);//注意由于u8的特性 Fudu[i]/Mag_max为0 让计算变得无意义
-				printf("fill %d,%d,%d,%d,BLUE\xff\xff\xff",
-				AMPLITUDE_X+i*w,
-				AMPLITUDE_ZERO_LINE-h,
-				AMPLITUDE_W_TO_DRAW,
-				h);
-				printf("t%d.txt=\"%.2f\"\xff\xff\xff",TXT_ID[i],U[i]);
-				
-				h_p=Phase[i]*PHASE_H/2/180;
-				//正负绘制不同
-				if(h_p>=0){
-				 printf("fill %d,%d,%d,%d,BLUE\xff\xff\xff",
-					PHASE_X+i*w,
-					PHASE_ZERO_LINE-h_p,
-					PHASE_W_TO_DRAW,
-					h_p);
-					
-					printf("t%d.txt=\"%.2f\"\xff\xff\xff",TXT_ID[i+5],Phase[i]);
-					
-				}
-				else
-				{
-					h_p=-h_p;
-				  printf("fill %d,%d,%d,%d,BLUE\xff\xff\xff",
-					PHASE_X+i*w,
-					PHASE_ZERO_LINE,
-					PHASE_W_TO_DRAW,
-					h_p);
-					
-					printf("t%d.txt=\"%.2f\"\xff\xff\xff",TXT_ID[i+5],Phase[i]);
-					
-				}
-			}
-	}
 }
 
-void HMICLS(void)
-{
-	selected_USART=usart2_u;
-	int posX=AMPLITUDE_X, posY=AMPLITUDE_Y, width=AMPLITUDE_W, height=AMPLITUDE_H, color=2016;
-  printf("fill %d,%d,%d,%d,%d\xff\xff\xff", posX, posY, width, height, color);
-	//printf("fill %d,%d,%d,%d,WHITE", AMPLITUDE_X, AMPLITUDE_Y, AMPLITUDE_W, AMPLITUDE_H);
-	//printf("fill %d,%d,%d,%d,65535\xff\xff\xff",PHASE_X,PHASE_Y,PHASE_W,PHASE_H);
-	posX=PHASE_X, posY=PHASE_Y, width=PHASE_W, height=PHASE_H, color=2016;
-  printf("fill %d,%d,%d,%d,%d\xff\xff\xff", posX, posY, width, height, color);
+//void HMICLS(void)
+//{
+//	selected_USART=usart2_u;
+////	uint16_t posX, posY, width, height, color;
+////	posX=AMPLITUDE_X;posY=AMPLITUDE_Y;width=AMPLITUDE_W;height=AMPLITUDE_H;color=0;
+////  printf("fill %d,%d,%d,%d,%d\xff\xff\xff", posX, posY, width, height, color);
+////	posX=PHASE_X, posY=PHASE_Y, width=PHASE_W, height=PHASE_H, color=0;
+////  printf("fill %d,%d,%d,%d,%d\xff\xff\xff", posX, posY, width, height, color);
 
-	uint8_t i;
-	for(i=0;i<10;i++){
-	printf("t%d.txt=\"...\"",TXT_ID[i]);
-	}
-}
+////	uint8_t i;
+////	for(i=0;i<10;i++){
+////	printf("t%d.txt=\"...\"",TXT_ID[i]);
+////	}
+//	printf("rest\xff\xff\xff");
+//}

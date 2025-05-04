@@ -7,7 +7,7 @@
 #define AMPLITUDE_X (457)
 #define AMPLITUDE_Y (10)
 #define AMPLITUDE_W (790-AMPLITUDE_X)
-#define AMPLITUDE_H (210-AMPLITUDE_Y)
+#define AMPLITUDE_H (206-AMPLITUDE_Y)
 #define AMPLITUDE_ZERO_LINE ((AMPLITUDE_Y)+(AMPLITUDE_H))
 #define AMPLITUDE_W_TO_DRAW 30
 //(790,210) 是幅度显示的右下角坐标
@@ -22,12 +22,10 @@
 #define WAVE_W 417
 #define SHOW_NUM 5
 extern uint32_t Mag_max;
-extern flag HMID_Show_Way;
-extern float U[5];
-extern float32_t Fudu[5];
+extern float32_t U[5];
 extern float32_t Phase[5];
-extern float U[5];
-extern float32_t Phase[5];
+extern float32_t freq_basic;
+extern float32_t THD;
 void usart2_init(uint32_t bound);
 void HMISendStr(char* buf);
 void HMISendEnd(void);
@@ -35,5 +33,4 @@ void USART_SendByte(uint8_t ch);
 int fputc(int ch, FILE * file);
 void WaveForm_Draw(void);
 void HMIDraw(void);
-void HMICLS(void);
 #endif

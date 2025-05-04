@@ -1,7 +1,7 @@
 .\objects\adc.o: Hardware\ADC.c
 .\objects\adc.o: .\Start\stm32f10x.h
 .\objects\adc.o: .\DSP\Include\core_cm3.h
-.\objects\adc.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\adc.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\adc.o: .\DSP\Include\cmsis_version.h
 .\objects\adc.o: .\DSP\Include\cmsis_compiler.h
 .\objects\adc.o: .\DSP\Include\cmsis_armcc.h
@@ -33,3 +33,11 @@
 .\objects\adc.o: .\Library\misc.h
 .\objects\adc.o: Hardware\ADC.h
 .\objects\adc.o: .\User\bool.h
+.\objects\adc.o: .\DSP\Include\arm_math.h
+.\objects\adc.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\string.h
+.\objects\adc.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\math.h
+.\objects\adc.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\float.h
+.\objects\adc.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\limits.h
+.\objects\adc.o: Hardware\BlueTooth_Usart.h
+.\objects\adc.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\adc.o: .\User\general_usart.h

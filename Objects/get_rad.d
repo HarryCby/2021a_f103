@@ -1,12 +1,12 @@
 .\objects\get_rad.o: User\get_rad.c
 .\objects\get_rad.o: .\DSP\Include\arm_math.h
 .\objects\get_rad.o: .\DSP\Include\cmsis_compiler.h
-.\objects\get_rad.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\get_rad.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\get_rad.o: .\DSP\Include\cmsis_armcc.h
-.\objects\get_rad.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\get_rad.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-.\objects\get_rad.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
-.\objects\get_rad.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\objects\get_rad.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\string.h
+.\objects\get_rad.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\math.h
+.\objects\get_rad.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\float.h
+.\objects\get_rad.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\limits.h
 .\objects\get_rad.o: User\get_rad.h
 .\objects\get_rad.o: User\FFT.h
 .\objects\get_rad.o: .\Start\stm32f10x.h
@@ -42,3 +42,6 @@
 .\objects\get_rad.o: .\DSP\Include\arm_common_tables.h
 .\objects\get_rad.o: .\Hardware\ADC.h
 .\objects\get_rad.o: .\User\bool.h
+.\objects\get_rad.o: .\Hardware\BlueTooth_Usart.h
+.\objects\get_rad.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\get_rad.o: .\User\general_usart.h

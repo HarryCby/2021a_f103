@@ -3,8 +3,8 @@
 #include "bool.h"
 int16_t ADC_SourceData[FFT_Len];
 flag adc_finish_fg=False;
-u32 Fs=256000;//采样频率
-u32 Fs_eq=256000;//等效采样频率
+float32_t Fs=256000;//采样频率
+float32_t Fs_eq=256000;//等效采样频率
 //PC0 : ADC123_IN10  输入
 void ADC_GPIO_Configuration(void)
 {
@@ -135,7 +135,7 @@ void Adc_Init(void)
 	ADC_InitStructure.ADC_NbrOfChannel       = 1;
 	ADC_Init(ADC1, &ADC_InitStructure);
 
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_7Cycles5);	//最后一个参数为
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_13Cycles5);	//最后一个参数为
 
 	//硬件校准
 	ADC_Cmd(ADC1, ENABLE);
@@ -203,20 +203,47 @@ void ADC_Start(void)
 // 配置 TIM3 的目标频率
 // 参数: freq - 目标频率 (Hz)
 // 注意: 系统时钟固定为 72MHz，psc 和 period 为 16 位寄存器值
-void ADC_Change_freq(u32 freq)
+void ADC_Set_Freq(u32 period,u32 psc)
+{
+			// 配置 TIM3
+		TIM_Cmd(TIM3, DISABLE);                          // 关闭 TIM3 以进行配置
+		TIM_SetAutoreload(TIM3, period);                 // 设置自动重载值 (period)
+		TIM_PrescalerConfig(TIM3, psc, TIM_PSCReloadMode_Immediate); // 设置预分频器
+		Fs = 72000000 / ((psc + 1) * (period + 1));         // 计算并更新实际采样频率
+	
+	
+}
+//target=FFT_Len/wantid*freq_basic
+//wantid*freq_basic/(2*wantid+1)=target*wantid/FFT_Len*wantid/(2*wantid+1)
+//freq_basic*FFT_Len/16  16:wantid
+//FFT_Len/wantid*freq_basic/(2*FFT_Len/wantid+1)
+void Change_freq(float32_t freq,uint16_t wantid){
+	float32_t target;
+	target=FFT_Len*freq/wantid;
+	
+	if(target<=ADC_HIGHEST_SAMPLE_FREQ){
+		ADC_Change_freq(target);
+		Fs_eq=Fs;
+	}
+	else{
+		ADC_Change_freq(FFT_Len/wantid*freq/(2*FFT_Len/wantid+1));//16=FFT_Len/16
+		Fs_eq=target;
+	}
+}
+void ADC_Change_freq(float32_t freq)
 {
     // 检查无效频率
-    if (freq == 0)
+    if (freq <= 0)
     {
         return;
     }
 
-    u32 clock = 72000000; // 系统时钟频率 72MHz
+    const u32 clock = 72000000; // 系统时钟频率 72MHz
     uint16_t psc;
     uint16_t period;
 
     // 计算目标值：clock / freq = (psc + 1) * (period + 1)
-    u32 target = clock / freq;
+    u32 target = round(1.0f*clock / freq);
 
     // 遍历 psc，寻找合适的 period
     for (psc = 0; psc < 65535; psc++)

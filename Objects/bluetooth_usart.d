@@ -1,7 +1,7 @@
 .\objects\bluetooth_usart.o: Hardware\BlueTooth_Usart.c
 .\objects\bluetooth_usart.o: .\Start\stm32f10x.h
 .\objects\bluetooth_usart.o: .\DSP\Include\core_cm3.h
-.\objects\bluetooth_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\bluetooth_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\bluetooth_usart.o: .\DSP\Include\cmsis_version.h
 .\objects\bluetooth_usart.o: .\DSP\Include\cmsis_compiler.h
 .\objects\bluetooth_usart.o: .\DSP\Include\cmsis_armcc.h
@@ -32,11 +32,11 @@
 .\objects\bluetooth_usart.o: .\Library\stm32f10x_wwdg.h
 .\objects\bluetooth_usart.o: .\Library\misc.h
 .\objects\bluetooth_usart.o: Hardware\BlueTooth_Usart.h
-.\objects\bluetooth_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\bluetooth_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\bluetooth_usart.o: .\User\bool.h
 .\objects\bluetooth_usart.o: .\DSP\Include\arm_math.h
-.\objects\bluetooth_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\bluetooth_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-.\objects\bluetooth_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
-.\objects\bluetooth_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\objects\bluetooth_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\string.h
+.\objects\bluetooth_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\math.h
+.\objects\bluetooth_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\float.h
+.\objects\bluetooth_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\limits.h
 .\objects\bluetooth_usart.o: .\User\general_usart.h

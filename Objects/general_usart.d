@@ -2,7 +2,7 @@
 .\objects\general_usart.o: .\Hardware\usart.h
 .\objects\general_usart.o: .\Start\stm32f10x.h
 .\objects\general_usart.o: .\DSP\Include\core_cm3.h
-.\objects\general_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\general_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\general_usart.o: .\DSP\Include\cmsis_version.h
 .\objects\general_usart.o: .\DSP\Include\cmsis_compiler.h
 .\objects\general_usart.o: .\DSP\Include\cmsis_armcc.h
@@ -34,9 +34,9 @@
 .\objects\general_usart.o: .\Library\misc.h
 .\objects\general_usart.o: .\User\bool.h
 .\objects\general_usart.o: .\DSP\Include\arm_math.h
-.\objects\general_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\general_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-.\objects\general_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
-.\objects\general_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\objects\general_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\string.h
+.\objects\general_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\math.h
+.\objects\general_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\float.h
+.\objects\general_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\limits.h
 .\objects\general_usart.o: .\User\general_usart.h
-.\objects\general_usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\general_usart.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdio.h

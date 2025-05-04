@@ -4,12 +4,10 @@
 USART_RX_Packet rxPacket;
 uint8_t dataIndex = 0;
 uint8_t packetState = 0; // 0:等待头 1:接收数据 2:等待尾
-flag start_sign_0=False;
-flag start_sign_1=False;
 //USART3 用以蓝牙通信 PB10：TX  PB11：RX  蓝牙设置为9600 波特率
 void BTUSART_Init(u32 bound)
 {
-	    //GPIO端口设置
+	  //GPIO端口设置
     GPIO_InitTypeDef GPIO_InitStructure;
     USART_InitTypeDef USART_InitStructure;
     NVIC_InitTypeDef NVIC_InitStructure;
@@ -65,22 +63,9 @@ void USART3_SendByte(uint8_t ch)
 USART3_IRQHandler 是 USART3 的中断处理函数，它会在任何启用的中断标志位被设置时触发。
 如果 USART_IT_RXNE 中断被启用，当接收到数据时，RXNE 标志位会被设置，从而触发中断处理函数。
 即使 USART_IT_TC 被禁用，只要 RXNE 仍然有效，中断处理函数仍然会被调用。*/
-void processPacket(USART_RX_Packet *packet) {
-		u8 cnt_0=0,i;
-		for(i=0;i<RX_DATA_LEN;i++){
-			if(packet->data[i]==0x30){
-				cnt_0++;
-			}
-		}
-		if(cnt_0>=3){
-			start_sign_0=True;
-		}
-    packet->received = 0;
-}
 
 void USART3_IRQHandler(void)
 {
-		
     if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET) {
         // 读取接收到的数据
 				uint8_t receivedByte;
@@ -115,8 +100,6 @@ void USART3_IRQHandler(void)
         USART_ClearITPendingBit(USART3, USART_IT_RXNE);
     }
 }
-
-
 void Serial_SendArr(uint8_t * Arr, uint8_t Length)
 {
 	selected_USART=usart3_u;

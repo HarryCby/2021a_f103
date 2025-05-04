@@ -35,7 +35,7 @@
 ".\objects\general_usart.o"
 ".\objects\get_rad.o"
 ".\DSP\arm_cortexM3l_math.lib"
-"D:\Keil_v5\Pack\ARM\CMSIS\5.7.0\CMSIS\DSP\Lib\ARM\arm_cortexM3l_math.lib"
+"D:\HardwareDevelop\keil_MDK_C51\MDK_Pack\ARM\CMSIS\5.7.0\CMSIS\DSP\Lib\ARM\arm_cortexM3l_math.lib"
 --library_type=microlib --strict --scatter ".\Objects\Project.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

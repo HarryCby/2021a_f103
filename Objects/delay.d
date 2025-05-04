@@ -1,7 +1,7 @@
 .\objects\delay.o: System\Delay.c
 .\objects\delay.o: .\Start\stm32f10x.h
 .\objects\delay.o: .\DSP\Include\core_cm3.h
-.\objects\delay.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\delay.o: D:\HardwareDevelop\keil_MDK_C51\keil_MDK\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\delay.o: .\DSP\Include\cmsis_version.h
 .\objects\delay.o: .\DSP\Include\cmsis_compiler.h
 .\objects\delay.o: .\DSP\Include\cmsis_armcc.h
