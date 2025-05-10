@@ -3,6 +3,8 @@
 #include "USART.h"
 #include "Delay.h"
 #include <arm_math.h>
+
+
 //usart2 TX:PA2  RX:PA3  用来与上位机通信
 u8 TXT_ID[12]={0,1,2,3,4,5,6,7,8,9,10,11};
 USART_RX_Packet rxPacket_2;
@@ -151,7 +153,8 @@ void WaveForm_Draw(void){
 	h=h*128/2.0f+128;
 		if(h>256)h=255;
 		else if(h<0)h=0;
-	printf("%c",(int)h);//tjc会对h%256
+
+		printf("%c",(int)h);//tjc会对h%256
 	}
  //确保透传结束，以免影响下一条指令
 	printf("\x01\xff\xff\xff");

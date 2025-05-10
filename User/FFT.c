@@ -360,7 +360,7 @@ void FFT_TEST(void)
 					FFT_In[2*i+1]=0;
 				}
 		}
-		else if(test_num==1){
+		else{
 				for(i=0;i<FFT_Len;i++)
 				{
 					FFT_In[2*i]=((float)ADC_SourceData[i]-mean)*blackman_win_table[i];    //((ADC_SourceData[i])-2048)去直流(0.5*arm_sin_f32(2*Pi*1000/Fs*i)+0.25*arm_sin_f32(2*Pi*2000/Fs*i)+0.1*arm_sin_f32(2*Pi*3000/Fs*i));
@@ -375,20 +375,14 @@ void FFT_TEST(void)
 				for(i=0;i<FFT_Len;i++)
 				{
 					FFT_In[2*i]=((float)ADC_SourceData[i]-mean)*hanning_win_table[i];   //*hanning_win_table[i]//((ADC_SourceData[i])-2048)去直流(0.5*arm_sin_f32(2*Pi*1000/Fs*i)+0.25*arm_sin_f32(2*Pi*2000/Fs*i)+0.1*arm_sin_f32(2*Pi*3000/Fs*i));
-					
-//					FFT_IN_Non[2*i]=temp;
 					FFT_In[2*i+1]=0;
-//					FFT_IN_Non[2*i+1]=0;
 				}
 		}
 		else{
 				for(i=0;i<FFT_Len;i++)
 				{
 					FFT_In[2*i]=((float)ADC_SourceData[i]-mean)*hanning_win_table[i];  //((ADC_SourceData[i])-2048)去直流(0.5*arm_sin_f32(2*Pi*1000/Fs*i)+0.25*arm_sin_f32(2*Pi*2000/Fs*i)+0.1*arm_sin_f32(2*Pi*3000/Fs*i));   blackman_win_table
-				
-//					FFT_IN_Non[2*i]=temp;
 					FFT_In[2*i+1]=0;
-//					FFT_IN_Non[2*i+1]=0;
 				}
 				}
 		}

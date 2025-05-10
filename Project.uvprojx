@@ -352,7 +352,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <ClangAsOpt>1</ClangAsOpt>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -399,14 +399,14 @@
               <FilePath>.\Start\system_stm32f10x.h</FilePath>
             </File>
             <File>
-              <FileName>startup_stm32f10x_hd.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\FFT_TEST\Start\startup_stm32f10x_hd.s</FilePath>
-            </File>
-            <File>
               <FileName>core_cm3.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Start\core_cm3.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32f10x_hd.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\Start\startup_stm32f10x_hd.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -790,14 +790,5 @@
     </components>
     <files/>
   </RTE>
-
-  <LayerInfo>
-    <Layers>
-      <Layer>
-        <LayName>Project</LayName>
-        <LayPrjMark>1</LayPrjMark>
-      </Layer>
-    </Layers>
-  </LayerInfo>
 
 </Project>
